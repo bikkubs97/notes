@@ -112,6 +112,7 @@ app.put('/notes/:id', authenticateToken, async (req, res) => {
 
     note.title = req.body.title || note.title
     note.content = req.body.content || note.content
+    note.lastModified = req.body.dateModified || note.lastModified
 
     const updatedNote = await note.save()
 
