@@ -18,7 +18,7 @@ export default function Account() {
     const token = localStorage.getItem('token');
 
     if (token) {
-      fetch(`http://localhost:3000/notes?username=${username}`, {
+      fetch(`https://notes-server-xm4d.onrender.com/notes?username=${username}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

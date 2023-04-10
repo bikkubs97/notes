@@ -17,7 +17,7 @@ export default function New() {
     dispatch(addNote(newNote));
 
     const token = localStorage.getItem("token");
-    fetch("http://localhost:3000/notes", {
+    fetch("https://notes-server-xm4d.onrender.com/notes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

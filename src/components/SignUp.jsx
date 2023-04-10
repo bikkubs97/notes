@@ -9,7 +9,7 @@ export default function Welcome() {
 
   function handleSignUp() {
     if( username&&password ){
-    fetch("http://localhost:3000/signup", {
+    fetch("https://notes-server-xm4d.onrender.com/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" }, 
       body: JSON.stringify({
