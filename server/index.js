@@ -110,9 +110,10 @@ app.put('/notes/:id', authenticateToken, async (req, res) => {
       return res.status(404).send('Note not found')
     }
 
-    note.title = req.body.title || note.title
-    note.content = req.body.content || note.content
-    note.lastModified = req.body.dateModified || note.lastModified
+    note.title = req.body.title 
+    note.content = req.body.content 
+    note.dateCreated = req.body.dateCreated 
+    note.lastModified = req.body.dateModified 
 
     const updatedNote = await note.save()
 
