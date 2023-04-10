@@ -105,11 +105,7 @@ export default function Account() {
       <h1>Your Notes</h1>
       <button className="delete signout" onClick={handleSignOut}>
         Sign Out
-      </button>
-      {notes.length === 0 ? (
-        <p className="loader">Loading Notes Please Wait...</p>
-      ) : (
-        <>
+      </button>      
           <button className="green" onClick={redirect}>
             Add New Note
           </button>
@@ -130,8 +126,8 @@ export default function Account() {
               </button>
             </div>
           ))}
-        </>
-      )}
+       
+    
 
       {editNoteData && (
         <div className="edit-note">
