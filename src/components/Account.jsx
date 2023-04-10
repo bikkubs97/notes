@@ -6,7 +6,10 @@ import { setNote, deleteNote, updateNote } from '../action';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
+
+
 export default function Account() {
+
   const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes);
   console.log(notes);
@@ -15,6 +18,7 @@ export default function Account() {
   const { username } = useParams();
 
   useEffect(() => {
+   
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -71,7 +75,7 @@ export default function Account() {
       ...editNoteData,
       [name]: value,
     })
-    console.log(editNoteData._id)
+  
   }
 
   function handleSaveChange(id) {
@@ -91,42 +95,46 @@ export default function Account() {
       },
       body: JSON.stringify(updatedNote),
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
+  
       .then((data) => {
         console.log(data);
         dispatch(updateNote(data));
         setEditNoteData(null);
       })
-      .catch((error) => console.error(error));
+      .catch((err) => console.error(err));
   }
   
     return (
       <div>
         <h1>Your Notes</h1>
-        <button className="green" onClick={redirect}>
-          Add New Note
+        {notes.length === 0 ? (
+  <p>Loading...</p>
+) : (
+  <>
+    <button className="green" onClick={redirect}>
+      Add New Note
+    </button>
+    <button className="delete signout" onClick={handleSignOut}>
+      Sign Out
+    </button>
+    {notes.map((note) => (
+      <div className="note" key={note._id}>
+        <h2>{note.title}</h2>
+        <h3 className="title">{note.content}</h3>
+        <p>Created: {note.dateCreated}</p>
+        <p>Last Modified: {note.lastModified}</p>
+        <button className="edit" onClick={() => setEditNoteData(note)}>
+          Edit Note
         </button>
-        <button className="delete signout" onClick={handleSignOut}>
-          Sign Out
+        <button className="delete" onClick={() => handleDelete(note._id)}>
+          Delete Note
         </button>
-        {notes &&
-          notes.map((note) => (
-            <div className="note" key={note._id}>
-              <h2>{note.title}</h2>
-              <h3 className="title">{note.content}</h3>
-              <p>Created: {note.dateCreated}</p>
-              <p>Last Modified: {note.lastModified}</p>
-              <button
-                className="edit"
-                onClick={() => setEditNoteData(note)}
-              >
-                Edit Note
-              </button>
-              <button className="delete" onClick={() => handleDelete(note._id)}>
-                Delete Note
-              </button>
-            </div>
-          ))}
+      </div>
+    ))}
+  </>
+)}
+
         {editNoteData && (
         
           <div className='edit-note'>
