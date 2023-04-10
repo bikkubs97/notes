@@ -33,12 +33,9 @@ export default function Account() {
     }
   }, [username]);
 
-  function handleEditButton(note) {
-    setNoteToEdit(note);
-  }
 
   function handleCancelEdit() {
-    setNoteToEdit(null);
+    setEditNoteData(null);
   }
 
   function redirect() {
@@ -67,15 +64,17 @@ export default function Account() {
     localStorage.removeItem('token');
     window.location.href = '/login';
   }
+
   function handleInputChange(event){
     const { name, value } = event.target;
     setEditNoteData({
       ...editNoteData,
       [name]: value,
     })
+    console.log(editNoteData._id)
   }
 
-  function handleSaveChange(noteId) {
+  function handleSaveChange(id) {
     const token = localStorage.getItem('token');
     const updatedNote = {
       title: editNoteData.title,
@@ -84,7 +83,7 @@ export default function Account() {
       lastModified: new Date().toLocaleString(),
     }
   
-    fetch(`https://notes-server-xm4d.onrender.com/notes/${noteId}`, {
+    fetch(`https://notes-server-xm4d.onrender.com/notes/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +95,7 @@ export default function Account() {
       .then((data) => {
         console.log(data);
         dispatch(updateNote(data));
-        setShowEditForm(false);
+        setEditNoteData(null);
       })
       .catch((error) => console.error(error));
   }
@@ -129,9 +128,11 @@ export default function Account() {
             </div>
           ))}
         {editNoteData && (
+        
           <div className='edit-note'>
+              {console.log(editNoteData)}
             <h2>Edit Note</h2>
-            <form onSubmit={handleEditButton}>
+            <form>
               <label>
                 Title:<br/>
                 <input
