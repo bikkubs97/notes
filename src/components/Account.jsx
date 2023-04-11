@@ -10,6 +10,7 @@ export default function Account() {
   const dispatch = useDispatch()
   const notes = useSelector((state) => state.notes)
   const [editNoteData, setEditNoteData] = useState(null)
+  
 
   const { username } = useParams()
 

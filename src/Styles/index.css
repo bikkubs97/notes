@@ -88,7 +88,7 @@ h1{
   font-size: 1rem;
   width: 20vw;
   height: 1.5rem;
-  margin-left: 1rem;
+
 }
 
 .hero{
@@ -138,4 +138,7 @@ height : 15vh;
 
 .loader{
   font-size: 1.5rem;
+}
+.msg{
+  margin-top: 1rem;
 }
