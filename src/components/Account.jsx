@@ -1,21 +1,20 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { setNote, deleteNote, updateNote } from '../action'
-import { useSelector } from 'react-redux'
-import { useState } from 'react'
+import React from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setNote, deleteNote, updateNote } from '../action';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 export default function Account() {
-  const dispatch = useDispatch()
-  const notes = useSelector((state) => state.notes)
-  const [editNoteData, setEditNoteData] = useState(null)
-  
+  const dispatch = useDispatch();
+  const notes = useSelector((state) => state.notes);
+  const [editNoteData, setEditNoteData] = useState(null);
 
-  const { username } = useParams()
+  const { username } = useParams();
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
 
     if (token) {
       fetch(
@@ -32,7 +31,7 @@ export default function Account() {
         .then((data) => {
           dispatch(setNote(data));
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error(error));
     }
   }, [username]);
 
@@ -41,11 +40,11 @@ export default function Account() {
   }
 
   function redirect() {
-    window.location.href = `/new/${username}`
+    window.location.href = `/new/${username}`;
   }
 
   function handleDelete(id) {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     fetch(`https://notes-server-xm4d.onrender.com/notes/${id}`, {
       method: 'DELETE',
       headers: {
@@ -58,16 +57,16 @@ export default function Account() {
         console.log(data);
         dispatch(deleteNote(id));
       })
-      .catch((error) => console.error(error))
+      .catch((error) => console.error(error));
   }
 
   function handleSignOut() {
-    localStorage.removeItem('token')
-    window.location.href = '/login'
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   }
 
   function handleInputChange(event) {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     setEditNoteData({
       ...editNoteData,
       [name]: value,
@@ -75,7 +74,7 @@ export default function Account() {
   }
 
   function handleSaveChange(id) {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const updatedNote = {
       title: editNoteData.title,
       content: editNoteData.content,
@@ -98,7 +97,7 @@ export default function Account() {
         dispatch(updateNote(data));
         setEditNoteData(null);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(err));
   }
 
   return (
@@ -106,29 +105,27 @@ export default function Account() {
       <h1>Your Notes</h1>
       <button className="delete signout" onClick={handleSignOut}>
         Sign Out
-      </button>      
-          <button className="green" onClick={redirect}>
-            Add New Note
+      </button>
+      <button className="green" onClick={redirect}>
+        Add New Note
+      </button>
+      <button className="delete signout" onClick={handleSignOut}>
+        Sign Out
+      </button>
+      {notes.map((note) => (
+        <div className="note" key={note._id}>
+          <h2>{note.title}</h2>
+          <h3 className="title">{note.content}</h3>
+          <p>Created: {note.dateCreated}</p>
+          <p>Last Modified: {note.lastModified}</p>
+          <button className="edit" onClick={() => setEditNoteData(note)}>
+            Edit Note
           </button>
-          <button className="delete signout" onClick={handleSignOut}>
-            Sign Out
+          <button className="delete" onClick={() => handleDelete(note._id)}>
+            Delete Note
           </button>
-          {notes.map((note) => (
-            <div className="note" key={note._id}>
-              <h2>{note.title}</h2>
-              <h3 className="title">{note.content}</h3>
-              <p>Created: {note.dateCreated}</p>
-              <p>Last Modified: {note.lastModified}</p>
-              <button className="edit" onClick={() => setEditNoteData(note)}>
-                Edit Note
-              </button>
-              <button className="delete" onClick={() => handleDelete(note._id)}>
-                Delete Note
-              </button>
-            </div>
-          ))}
-       
-    
+        </div>
+      ))}
 
       {editNoteData && (
         <div className="edit-note">
