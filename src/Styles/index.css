@@ -158,14 +158,17 @@ height : 15vh;
 
 .edit-note{
   position: fixed;
+  left: 1rem;
   top : 25vh;
-  width: 80vw;
+  width: 80%;
   border: 1px solid white;
-  padding-left: 5rem;
-  padding-top: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
   padding-bottom: 2rem;
-  text-align: left;
+  text-align: center;
   background-color: #242424;
+
 
 }
 .edit-note input{
