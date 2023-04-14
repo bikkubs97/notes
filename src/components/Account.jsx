@@ -116,8 +116,8 @@ export default function Account() {
         <div className="note" key={note._id}>
           <h2>{note.title}</h2>
           <h3 className="title">{note.content}</h3>
-          <p>Created: {note.dateCreated}</p>
-          <p>Last Modified: {note.lastModified}</p>
+          <p>Created: {note.dateCreated.split('T')[0]}</p>
+          <p>Last Modified: {note.lastModified.split('T')[0]}</p>
           <button className="edit" onClick={() => setEditNoteData(note)}>
             Edit Note
           </button>
