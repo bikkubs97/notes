@@ -102,16 +102,16 @@ export default function Account() {
 
   return (
     <div>
-      <div className='head'>
-      <button className="green" onClick={redirect}>
-        Add New Note
-      </button>
-      <h1>Your Notes</h1>
-      <button className="delete" onClick={handleSignOut}>
-        Sign Out
-      </button>
+      <div className="head">
+        <button className="green" onClick={redirect}>
+          Add New Note
+        </button>
+        <h1>Your Notes</h1>
+        <button className="delete" onClick={handleSignOut}>
+          Sign Out
+        </button>
       </div>
-     
+
       {notes.map((note) => (
         <div className="note" key={note._id}>
           <h2>{note.title}</h2>

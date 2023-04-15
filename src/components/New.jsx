@@ -1,33 +1,31 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addNote } from "../action";
-import { useParams } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNote } from '../action';
+import { useParams } from 'react-router-dom';
 
 export default function New() {
-  const dispatch = useDispatch()
-  const { username } = useParams()
+  const dispatch = useDispatch();
+  const { username } = useParams();
 
-
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
   function handleAddNote() {
     const newNote = { title, content };
     dispatch(addNote(newNote));
 
-    const token = localStorage.getItem("token");
-    fetch("https://notes-server-xm4d.onrender.com/notes", {
-      method: "POST",
+    const token = localStorage.getItem('token');
+    fetch('https://notes-server-xm4d.onrender.com/notes', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newNote),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("New note created:", data);
+        console.log('New note created:', data);
       })
       .then(() => {
         window.location.href = `/account/${username}`;
@@ -58,7 +56,9 @@ export default function New() {
           />
         </label>
         <br />
-        <button className="green" onClick={handleAddNote}>Add Note</button>
+        <button className="green" onClick={handleAddNote}>
+          Add Note
+        </button>
       </div>
     </div>
   );
