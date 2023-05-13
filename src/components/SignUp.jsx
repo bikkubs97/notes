@@ -7,7 +7,7 @@ export default function Welcome() {
 
   function handleSignUp() {
     if (username && password) {
-      fetch('https://notes-server-xm4d.onrender.com/signup', {
+      fetch('https://notes-server-2anm.onrender.com/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
