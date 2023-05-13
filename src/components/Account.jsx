@@ -45,7 +45,7 @@ export default function Account() {
 
   function handleDelete(id) {
     const token = localStorage.getItem('token');
-    fetch(`https://notes-server-xm4d.onrender.com/notes/${id}`, {
+    fetch(`https://notes-server-2anm.onrender.com/notes/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export default function Account() {
       lastModified: new Date().toLocaleString(),
     };
 
-    fetch(`https://notes-server-xm4d.onrender.com/notes/${id}`, {
+    fetch(`https://notes-server-2anm.onrender.com/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
