@@ -16,7 +16,7 @@ export default function Login() {
   function handleSignIn(event) {
     event.preventDefault()   
     setloginMessage('Please Wait...')
-    fetch("https://notes-server-xm4d.onrender.com/login", {
+    fetch("https://notes-server-2anm.onrender.com/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
