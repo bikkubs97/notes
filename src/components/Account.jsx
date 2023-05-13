@@ -18,7 +18,7 @@ export default function Account() {
 
     if (token) {
       fetch(
-        `https://notes-server-xm4d.onrender.com/notes?username=${username}`,
+        `https://notes-server-2anm.onrender.com/notes?username=${username}`,
         {
           method: 'GET',
           headers: {
