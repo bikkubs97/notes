@@ -7,6 +7,7 @@ export default function Welcome() {
 
   function handleSignUp() {
     if (username && password) {
+      setMessage('Please Wait...!');
       fetch('https://notes-server-2anm.onrender.com/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -14,7 +15,9 @@ export default function Welcome() {
           name: username,
           password: password,
         }),
+      
       })
+      
         .then((response) => {
           if (response.status === 201) {
             console.log('success');
