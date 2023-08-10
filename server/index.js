@@ -104,24 +104,32 @@ app.post('/notes', authenticateToken, async (req, res) => {
 //edit a note
 app.put('/notes/:id', authenticateToken, async (req, res) => {
   try {
-    const note = await Note.findById(req.params.id)
-    console.log('Retrieved Note:', note);
+    // Retrieve the note by its ID
+    
+    const note = await Note.findById(req.params.id);
 
     if (!note) {
-      return res.status(404).send('Note not found')
+      return res.status(404).send('Note not found');
     }
 
-    note.title = req.body.title 
-    note.content = req.body.content 
-    note.dateCreated = req.body.dateCreated 
-    note.lastModified = req.body.dateModified 
+    // Update the fields of the retrieved note
+    note.title = req.body.title;
+    note.content = req.body.content;
+    note.dateCreated = req.body.dateCreated;
+    note.lastModified = req.body.dateModified;
 
-    const updatedNote = await note.save()
-    res.send(updatedNote)
+    // Save the updated note back to the database
+    const updatedNote = await note.save();
+
+    // Send the updated note as a response
+    res.json(updatedNote);
   } catch (error) {
-    console.error(error)
+    // Handle errors
+    console.error('Error updating note:', error);
+    res.status(500).send('Error updating note');
   }
 });
+
 
 //delete a note
 app.delete('/notes/:id', authenticateToken, async (req, res) => {

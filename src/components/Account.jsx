@@ -1,10 +1,10 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setNote, deleteNote, updateNote } from '../action';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import React from "react";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setNote, deleteNote, updateNote } from "../action";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export default function Account() {
   const dispatch = useDispatch();
@@ -14,15 +14,15 @@ export default function Account() {
   const { username } = useParams();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (token) {
       fetch(
         `https://notes-server-2anm.onrender.com/notes?username=${username}`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -39,16 +39,20 @@ export default function Account() {
     setEditNoteData(null);
   }
 
+  function navigateTo(url) {
+    window.location.assign(url);
+  }
+
   function redirect() {
-    window.location.href = `/new/${username}`;
+    navigateTo(`/new/${username}`);
   }
 
   function handleDelete(id) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     fetch(`https://notes-server-2anm.onrender.com/notes/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
@@ -61,8 +65,8 @@ export default function Account() {
   }
 
   function handleSignOut() {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    localStorage.removeItem("token");
+    navigateTo("/login");
   }
 
   function handleInputChange(event) {
@@ -74,30 +78,39 @@ export default function Account() {
   }
 
   function handleSaveChange(id) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const updatedNote = {
       title: editNoteData.title,
       content: editNoteData.content,
       dateCreated: editNoteData.dateCreated,
       lastModified: new Date().toLocaleString(),
     };
-
-    fetch(`https://notes-server-2anm.onrender.com/${id}`, {
-      method: 'PUT',
+    fetch(`https://notes-server-2anm.onrender.com/notes/${id}`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(updatedNote),
     })
-      .then((response) => response.text())
-
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Failed to update note: ${response.status} ${response.statusText}`
+          );
+        }
+        return response.text();
+      })
       .then((data) => {
-        console.log(data);
+        console.log("Response Data:", data); // Log the response data
         dispatch(updateNote(data));
         setEditNoteData(null);
+        window.location.reload();
       })
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        console.error("Error updating note:", error);
+        // Handle the error, display a message to the user, etc.
+      });
   }
 
   return (
@@ -116,8 +129,8 @@ export default function Account() {
         <div className="note" key={note._id}>
           <h2>{note.title}</h2>
           <h3 className="title">{note.content}</h3>
-          <p>Created: {note.dateCreated.split('T')[0]}</p>
-          <p>Last Modified: {note.lastModified.split('T')[0]}</p>
+          <p>Created: {note.dateCreated.split("T")[0]}</p>
+          <p>Last Modified: {note.lastModified.split("T")[0]}</p>
           <button className="edit" onClick={() => setEditNoteData(note)}>
             Edit Note
           </button>
@@ -127,43 +140,47 @@ export default function Account() {
         </div>
       ))}
 
-      {editNoteData && (
-        <div className="edit-note">
-          {console.log(editNoteData)}
-          <h2>Edit Note</h2>
-          <form>
-            <label>
-              Title:
-              <br />
-              <input
-                type="text"
-                name="title"
-                value={editNoteData.title}
-                onChange={handleInputChange}
-              />
-            </label>
-            <br />
-            <label>
-              Content: <br />
-              <textarea
-                name="content"
-                value={editNoteData.content}
-                onChange={handleInputChange}
-              />
-            </label>
-            <br />
-            <button
-              className="green"
-              onClick={() => handleSaveChange(editNoteData._id)}
-            >
-              Save Changes
-            </button>
-            <button className="delete" onClick={handleCancelEdit}>
-              Cancel
-            </button>
-          </form>
-        </div>
-      )}
+{editNoteData && (
+  <div className="edit-note">
+    <h2>Edit Note</h2>
+    <form>
+      <label>
+        Title:
+        <br />
+        <input
+          type="text"
+          name="title"
+          value={editNoteData.title}
+          onChange={handleInputChange}
+        />
+      </label>
+      <br />
+      <label>
+        Content: <br />
+        <textarea
+          name="content"
+          value={editNoteData.content}
+          onChange={handleInputChange}
+        />
+      </label>
+      <br />
+      {/* Use preventDefault to prevent the default form submission */}
+      <button
+        className="green"
+        onClick={(e) => {
+          e.preventDefault();
+          handleSaveChange(editNoteData._id);
+        }}
+      >
+        Save Changes
+      </button>
+      <button className="delete" onClick={handleCancelEdit}>
+        Cancel
+      </button>
+    </form>
+  </div>
+)}
+
     </div>
   );
 }
