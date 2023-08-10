@@ -105,6 +105,7 @@ app.post('/notes', authenticateToken, async (req, res) => {
 app.put('/notes/:id', authenticateToken, async (req, res) => {
   try {
     const note = await Note.findById(req.params.id)
+    console.log('Retrieved Note:', note);
 
     if (!note) {
       return res.status(404).send('Note not found')
@@ -116,11 +117,9 @@ app.put('/notes/:id', authenticateToken, async (req, res) => {
     note.lastModified = req.body.dateModified 
 
     const updatedNote = await note.save()
-
     res.send(updatedNote)
   } catch (error) {
     console.error(error)
-    res.status(500).send('Error updating note')
   }
 });
 
@@ -128,6 +127,7 @@ app.put('/notes/:id', authenticateToken, async (req, res) => {
 app.delete('/notes/:id', authenticateToken, async (req, res) => {
   try {
     const note = await Note.findById(req.params.id)
+    
 
     if (!note) {
       return res.status(404).send('Note not found')
