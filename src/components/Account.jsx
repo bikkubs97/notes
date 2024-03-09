@@ -164,7 +164,7 @@ export default function Account() {
         />
       </label>
       <br />
-      {/* Use preventDefault to prevent the default form submission */}
+    
       <button
         className="green"
         onClick={(e) => {

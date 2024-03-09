@@ -148,6 +148,9 @@ app.delete('/notes/:id', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/', (req,res)=>{
+  res.send("res")
+})
 //middleware function to handle jwt auth
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization']
